@@ -1,3 +1,14 @@
+
+#TODO:
+#	4.1.0
+#	SOCKS5 support (ZMQ_SOCKS_PROXY)
+#	ZMQ_ROUTER_HANDOVER
+#	ZMQ_TOS
+#	ZMQ_CONNECT_RID
+#	ZMQ_HANDSHAKE_IVL
+#	ZMQ_IDENTITY_FD
+#	ZMQ_XPUB_NODROP
+#	ZMQ_SRCFD and ZMQ_SHARED message options
 package require critcl 3
 
 namespace eval ::zmq {
@@ -211,7 +222,7 @@ critcl::ccode {
 					  "PLAIN_SERVER", "PLAIN_USERNAME", "PLAIN_PASSWORD",
 					  "CURVE_SERVER", "CURVE_PUBLICKEY", "CURVE_SECRETKEY", "CURVE_SERVERKEY",
 					  "PROBE_ROUTER", "REQ_CORRELATE", "REQ_RELAXED", "CONFLATE", "ZAP_DOMAIN",
-					  "IPV6", NULL };
+					  "IPV6", "CONNECT_TIMEOUT", NULL };
     static int         sonames_cget[] = { 0,     1,        1,        1,          1,          0,           0,
                                           1,      1,              1,        1,        1,         0,    1,
                                           1,      1,        1,               1,         1,
@@ -222,7 +233,7 @@ critcl::ccode {
 					  1,              1,                1,
 					  2,              2,                 2,                 2,
 					  0,              0,               0,             0,          1,
-					  1,      0 };
+					  1,      0, 0 };
 
     static int get_socket_option(Tcl_Interp* ip, Tcl_Obj* obj, int* name)
     {
@@ -236,7 +247,7 @@ critcl::ccode {
 				ON_PLAIN_SERVER, ON_PLAIN_USERNAME, ON_PLAIN_PASSWORD,
 				ON_CURVE_SERVER, ON_CURVE_PUBLICKEY, ON_CURVE_SECRETKEY, ON_CURVE_SERVERKEY,
 				ON_PROBE_ROUTER, ON_REQ_CORRELATE, ON_REQ_RELAXED, ON_CONFLATE, ON_ZAP_DOMAIN,
-				ON_IPV6 };
+				ON_IPV6, ON_CONNECT_TIMEOUT };
 	int index = -1;
 	if (Tcl_GetIndexFromObj(ip, obj, sonames, "name", 0, &index) != TCL_OK)
 	    return TCL_ERROR;
@@ -274,6 +285,7 @@ critcl::ccode {
 	case ON_IMMEDIATE: *name = ZMQ_IMMEDIATE; break;
 	case ON_XPUB_VERBOSE: *name = ZMQ_XPUB_VERBOSE; break;
 	case ON_IPV6: *name = ZMQ_IPV6; break;
+	case ON_CONNECT_TIMEOUT: *name = ZMQ_CONNECT_TIMEOUT; break;
 	case ON_MECHANISM: *name = ZMQ_MECHANISM; break;
 	case ON_PLAIN_SERVER: *name = ZMQ_PLAIN_SERVER; break;
 	case ON_PLAIN_USERNAME: *name = ZMQ_PLAIN_USERNAME; break;
@@ -617,6 +629,7 @@ critcl::ccode {
 	case ZMQ_TCP_KEEPALIVE_INTVL:
 	case ZMQ_IMMEDIATE:
 	case ZMQ_IPV6:
+	case ZMQ_CONNECT_TIMEOUT:
 	case ZMQ_PLAIN_SERVER:
 	case ZMQ_CURVE_SERVER:
 	case ZMQ_PROBE_ROUTER:
@@ -796,6 +809,7 @@ critcl::ccode {
 	case ZMQ_IMMEDIATE:
 	case ZMQ_XPUB_VERBOSE:
 	case ZMQ_IPV6:
+	case ZMQ_CONNECT_TIMEOUT:
 	case ZMQ_PLAIN_SERVER:
 	case ZMQ_CURVE_SERVER:
 	case ZMQ_PROBE_ROUTER:
@@ -2403,4 +2417,4 @@ critcl::cinit {
 
 
 
-package provide zmq 4.0.1
+package provide zmq 4.3.2

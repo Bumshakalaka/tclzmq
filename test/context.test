@@ -1,6 +1,6 @@
 package require tcltest
 set auto_path [list ../lib {*}$auto_path]
-package require -exact zmq 4.0.1
+package require -exact zmq 4.3.2
 
 tcltest::test context-2 {zmq context} -body {
     zmq context ctx -1
@@ -180,7 +180,7 @@ tcltest::test context-16.1 {zmq context} -setup {
     ctx configure
 } -cleanup {
     ctx term
-} -returnCodes {ok} -result {{IO_THREADS 1} {MAX_SOCKETS 1024}}
+} -returnCodes {ok} -result {{IO_THREADS 1} {MAX_SOCKETS 1023}}
 
 tcltest::test context-16.2 {zmq context} -setup {
     zmq context ctx
